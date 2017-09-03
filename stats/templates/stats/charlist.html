@@ -1,0 +1,10 @@
+<h1> {{char.name}} </h1>
+{% if char_ex_list %}
+    <ul>
+    {% for ex in char_ex_list %}
+        <li>{{ex.name}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No expeditions yet.</p>
+{% endif %}
