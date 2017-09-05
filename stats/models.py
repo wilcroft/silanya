@@ -54,6 +54,23 @@ class Character(models.Model):
             x += xpo.value
         return x
 
+    def xpByEx(self):
+        lst = []
+        for ex in Expedition.objects.order_by('-date'):
+            if ex.members.filter(slug=self.slug).exists():
+                lst.append(ex.getMemberXP(self))
+            else:
+                lst.append("")
+        return lst
+
+    def tableInfo(self):
+        lst = []
+        lst.append(levelLookup(self.xp()))
+        lst.append(self.xp())
+        lst.append(nextLevel(self.xp()))
+        lst.extend(self.xpByEx())
+        return lst
+
 class Expedition(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField()
@@ -72,7 +89,8 @@ class Expedition(models.Model):
         self.save()
 
     def getMemberXP (self, char):
-        return XP.objects.all().filter(expedition=self).filter(character=char).value
+#        return XP.objects.all().filter(expedition=self).filter(character=char).value
+        return XP.objects.get(expedition=self,character=char).value
 
     def setMemberXP (self, char, xp):
         t = XP.objects.all().filter(expedition=self).filter(character=char)
@@ -105,3 +123,17 @@ def levelLookup(xp):
     elif (xp < 300000): return 9
     elif (xp < 410000): return 10
     else: return 11
+
+def nextLevel(xp):
+    lvl = levelLookup(xp)
+    if (lvl == 1): return 800-xp
+    elif lvl == 2: return 2400 - xp
+    elif lvl == 3: return 4800 - xp
+    elif lvl == 4: return 12000 - xp
+    elif lvl == 5: return 24000 - xp
+    elif lvl == 6: return 48000 - xp
+    elif lvl == 7: return 96000 - xp
+    elif lvl == 8: return 200000 - xp
+    elif lvl == 9: return 300000 - xp
+    elif lvl == 10: return 410000 - xp
+    else: return -1

@@ -1,9 +1,27 @@
+{% load stats_extras %}
 {% if character_overview %}
+<table>
+	<tr> <td> </td> <td> Level </td> <td> Total XP </td> <td> Next Level </td> 
+	{% for ex in allex %}
+		<td> {{ex.name}} </td>
+	{% endfor %}
+	</tr>
+	{% for char in character_overview %}
+		<tr>
+		<td> <a href="{% url 'stats:char_view' char.slug %}">{{ char.name }}</a> </td>
+		{% for xp in char.tableInfo %}
+			<td> {{ xp }} </td>
+		{% endfor %}
+		</tr>
+	{% endfor %}
+</table>
+<!--
     <ul>
     {% for char in character_overview %}
         <li><a href="{% url 'stats:char_view' char.slug %}">{{ char.name }}</a></li>
     {% endfor %}
     </ul>
+-->
 {% else %}
     <p>No characters are available.</p>
 {% endif %}
