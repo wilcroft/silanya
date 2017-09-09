@@ -47,6 +47,13 @@ class Character(models.Model):
             x += xpo.value
         return x
 
+    def xpSince(self, time):
+        x = 0
+        xpobjs = XP.objects.all().filter(character=self).filter(expedition.date >= date)
+        for xpo in xpobjs:
+            x += xpo.value
+        return x
+
     def xp (self):
         x = 0
         xpobjs = XP.objects.all().filter(character=self)
@@ -108,8 +115,21 @@ class XP(models.Model):
     value = models.IntegerField()
     character = models.ForeignKey(Character)
     expedition = models.ForeignKey(Expedition)
+    
     def __str__(self):
         return self.expedition.name + " (" + self.character.name + ")"
+    def getValue(self):
+        return self.value
+
+class CarryXP(XP):
+    lumpNotPool = models.BooleanField()
+    
+    def getValue(self):
+        if (lumpNotPool): return value
+        else: 
+            xp = character.xpSince(expedition.date)
+            if (xp > value): return value
+            else: return xp
 
 def levelLookup(xp):
     if (xp < 800): return 1

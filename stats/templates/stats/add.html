@@ -1,0 +1,22 @@
+<h1> Add New Expedition </h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form method="post">
+	{% csrf_token %}
+	{{ form |linebreaks}}
+	{% for row in charformset %}
+		<div class='table'>
+		<table class='no_error'>
+		{{ row.add_table }}
+		</table>
+		</div>
+	{% endfor %}
+	<input type="button" value="+" id="addrow" />
+	<script>
+	    $('#add_more').click(function() {
+        	addRow('div.table:last', 'chars');
+    	});
+	</script>	
+	<br />
+<input type="submit" name="submit" value="done" />
+</form>

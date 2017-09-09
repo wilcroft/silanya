@@ -1,0 +1,9 @@
+{% if character_overview %}
+    <ul>
+    {% for char in character_overview %}
+        <li><a href="{% url 'stats:char_view' char.slug %}">{{ char.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No characters are available.</p>
+{% endif %}
