@@ -1,21 +1,29 @@
+{% load staticfiles %}
+<script type=text/javascript src={% static 'static_jquery/js/jquery.js' %}></script>
+<script type=text/javascript src={% static 'stats/add/js/jquery.formset.js' %}></script>
+
 <h1> Add New Expedition </h1>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form method="post">
+<form method="post" id="addExForm">
 	{% csrf_token %}
 	{{ form |linebreaks}}
-	{% for row in charformset %}
-		<div class='table'>
-		<table class='no_error'>
-		{{ row.add_table }}
-		</table>
-		</div>
+	<table> <tbody>
+	{% for row in charformset.forms %}
+	<tr id="{{ row.prefix }}-row">
+		<td> {{ row.char }} </td>
+		<td> {{ row.value }} </td>
+	</tr>
 	{% endfor %}
+	</tbody> </table>
+	{{ charformset.management_form }}
 	<input type="button" value="+" id="addrow" />
-	<script>
-	    $('#add_more').click(function() {
-        	addRow('div.table:last', 'chars');
-    	});
+	<script type="text/javascript">
+		$(function() {
+			$('#addExForm tbody tr').formset({
+				prefix: "{{ charformset.prefix }}"
+				});
+		}) 
 	</script>	
 	<br />
 <input type="submit" name="submit" value="done" />

@@ -66,6 +66,7 @@ def add(request):
             
             x.save()
             charformset = CharFormSet(request.POST, prefix='chars')
+            print("Adding to form, now at ", charformset.total_form_count(), file=sys.stderr)
 ##            print (charformset, file=sys.stderr)
             for c in charformset:
                 c.is_valid()
