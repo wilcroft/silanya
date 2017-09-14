@@ -2,12 +2,19 @@
 <script type=text/javascript src={% static 'static_jquery/js/jquery.js' %}></script>
 <script type=text/javascript src={% static 'stats/add/js/jquery.formset.js' %}></script>
 
-<h1> Add New Expedition </h1>
+<h1> Editing Expedition </h1>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 <form method="post" id="addExForm">
 	{% csrf_token %}
-	{{ form |linebreaks}}
+<!--	{{ form |linebreaks}} -->
+	{% for field in form %}
+		{% if field.label == "Expedition Slug" %}
+			{{ field.as_hidden }}
+		{% else %}
+			{{ field.label }}:{{ field }} <br>
+		{% endif %}
+	{% endfor %}
 	<table> <tbody>
 	{% for row in charformset.forms %}
 	<tr id="{{ row.prefix }}-row">

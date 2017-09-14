@@ -19,6 +19,6 @@ class AddExForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(AddExForm,self).__init__(*args, **kwargs)
-#        self.fields['chars'] = [forms.ModelChoiceField(queryset=Character.objects.all().filter(status!=Character.DEAD).filter(status!=Character.DEPARTED), label='Name'), forms.IntegerField(label='XP')]
-#        self.kwargs['chars'].append([forms.ModelChoiceField(queryset=Character.objects.all().filter(status!=Character.DEAD).filter(status!=Character.DEPARTED), label='Name'), forms.IntegerField(label='XP')])
         
+class EditExForm(AddExForm):
+    slug = forms.SlugField(label='Expedition Slug', disabled=True)

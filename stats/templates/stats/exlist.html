@@ -1,0 +1,11 @@
+<h1> {{ex.name}} </h1>
+<a href="{% url 'stats:edit' ex.slug %}">Edit</a>
+{% if ex_list %}
+    <ul>
+    {% for ex in ex_list %}
+        <li>{{ ex.character }}: {{ ex.value }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No expeditions yet.</p>
+{% endif %}

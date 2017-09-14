@@ -4,7 +4,7 @@
 	<tr> <td><a href="{% url 'stats:add' %}"> Add new </a> </td> 
 	<td> Level </td> <td> Total XP </td> <td> Next Level </td> 
 	{% for ex in allex %}
-		<td> {{ex.name}} </td>
+		<td> <a href="{% url 'stats:ex_view' ex.slug %}">{{ex.name}} </a></td>
 	{% endfor %}
 	</tr>
 	{% for char in character_overview %}
