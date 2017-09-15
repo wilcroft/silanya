@@ -1,4 +1,5 @@
 import sys
+import pdb
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -50,28 +51,33 @@ class IndexView(generic.ListView):
         context['allex'] = Expedition.objects.order_by('-date')
         return context
 
-class AddView(generic.CreateView):
-    model = Expedition
-    fields = ['slug', 'name', 'dm', 'date' ]
-#    fields = ['slug', 'name', 'dm', 'date', 'members' ]
-    template_name = 'stats/add.html'
-    
-#    def __init__(self, *arfs, **kwargs):
-#        super(AddView
-#    def form_valid(self, form):
-                
-
 # Create your views here.
 
 def add(request):
     CharFormSet = formset_factory(XPForm, extra=1)
     if request.method == 'POST':
-##        print (request.POST['dm'], file=sys.stderr)
-        if 'add' in request.POST:
-            charformset = CharFormSet(request.POST, prefix='chars')
-            form= AddExForm(request.POST)
-            print("Adding to form, now at ", charformset.total_form_count(), file=sys.stderr)
+        form = AddExForm(request.POST) 
+        charformset = CharFormSet(request.POST, prefix='chars')
+        charlist = []
+        if form.is_valid()==False:
+            #error out
+            return render(request, 'stats/add.html', {'form':form, 'charformset':charformset})
+        if charformset.is_valid()==False:
+            #error out
+            return render(request, 'stats/add.html', {'form':form, 'charformset':charformset})
+        for c in charformset:
+            c.is_valid()
+            if c.is_valid()==False or c.cleaned_data == {} or c.cleaned_data['char'] is None or c.cleaned_data['value'] is None:
+                #error out
+                return render(request, 'stats/add.html', {'form':form, 'charformset':charformset})
+            charlist.append(c.cleaned_data['char'])
+        if len(charlist) > len(set(charlist)):
+            return render(request, 'stats/add.html', {'form':form, 'charformset':charformset})
+        if Expedition.objects.filter(slug=request.POST['slug']).exists():
+            # We have a dupe, send an error notice
+            return render(request, 'stats/add.html', {'form':form, 'charformset':charformset})
         elif 'submit' in request.POST:
+            print(charformset, file=sys.stderr)
             x = Expedition()
             x.dm = Player.objects.get(pk=request.POST['dm'])
             x.name = request.POST['name']
@@ -79,14 +85,8 @@ def add(request):
             x.slug = request.POST['slug']
             
             x.save()
-            charformset = CharFormSet(request.POST, prefix='chars')
-#            print("Adding to form, now at ", charformset.total_form_count(), file=sys.stderr)
-##            print (charformset, file=sys.stderr)
             for c in charformset:
                 c.is_valid()
-##              print (c.is_valid(), file=sys.stderr)
-##              print (c.cleaned_data, file=sys.stderr)
-##              print (c.cleaned_data['char'], file=sys.stderr)
                 x.members.add(Character.objects.get(pk=c.cleaned_data['char'].pk))
                 xp = XP()
                 xp.expedition = x
@@ -106,15 +106,12 @@ def edit(request, pk):
     if request.method == 'POST':
         form = AddExForm(request.POST)
         form.is_valid()
-        print(form.fields['slug'].initial, file=sys.stderr)
-       # print(form.cleaned_data, file=sys.stderr)
         x = Expedition.objects.get(slug=request.POST['slug'])
         x.dm = Player.objects.get(pk=request.POST['dm'])
         x.name = request.POST['name']
         x.members.clear()
         charformset = CharFormSet(request.POST, prefix='chars')
         chars_found = []
-#        print("Adding to form, now at ", charformset.total_form_count(), file=sys.stderr)
         for c in charformset:
             c.is_valid()
             char = Character.objects.get(pk=c.cleaned_data['char'].pk)
