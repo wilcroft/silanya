@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from markdownx import urls as markdownx
 
 urlpatterns = [
     url(r'^stats/', include ('stats.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^markdownx/', include(markdownx)),
 ]

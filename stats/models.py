@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 from django.utils import timezone
+from markdownx.models import MarkdownxField
 
 # 
 class Player(models.Model):
@@ -40,16 +41,18 @@ class Character(models.Model):
     def levelAt(self, time):
         return levelLookup(self.xpAt(time))
 
-    def xpAt(self, time):
+    def xpAt(self, date):
         x = 0
-        xpobjs = XP.objects.all().filter(character=self).filter(expedition.date <= date)
+        xpobjs = XP.objects.all().filter(character=self)
+        xpobjs = xpobjs.filter(expedition__date__lte = date)
         for xpo in xpobjs:
             x += xpo.value
         return x
 
-    def xpSince(self, time):
+    def xpSince(self, date):
         x = 0
-        xpobjs = XP.objects.all().filter(character=self).filter(expedition.date >= date)
+        xpobjs = XP.objects.all().filter(character=self)
+        xpobjs = xpobjs.filter(expedition__date__gte = date)
         for xpo in xpobjs:
             x += xpo.value
         return x
@@ -59,6 +62,8 @@ class Character(models.Model):
         xpobjs = XP.objects.all().filter(character=self)
         for xpo in xpobjs:
             x += xpo.value
+        for cxp in CXP.objects.filter(character=self):
+            x += cxp.getValue()
         return x
 
     def xpByEx(self):
@@ -71,7 +76,9 @@ class Character(models.Model):
         return lst
 
     def tableInfo(self):
+        sdict = dict(Character.STATUS_CHOICE)
         lst = []
+        lst.append(sdict[self.status])
         lst.append(levelLookup(self.xp()))
         lst.append(self.xp())
         lst.append(nextLevel(self.xp()))
@@ -85,6 +92,8 @@ class Expedition(models.Model):
     
     dm = models.ForeignKey(Player)
     date = models.DateField()
+    
+    log = MarkdownxField()
 
     def __str__(self):
         return self.name
@@ -121,14 +130,20 @@ class XP(models.Model):
     def getValue(self):
         return self.value
 
-class CarryXP(XP):
+class CXP(models.Model):
     lumpNotPool = models.BooleanField()
+    value = models.IntegerField()
+    character = models.ForeignKey(Character)
+    expedition = models.ForeignKey(Expedition)
+    
+    def __str__(self):
+        return self.expedition.name + " (" + self.character.name + ")"
     
     def getValue(self):
-        if (lumpNotPool): return value
+        if (self.lumpNotPool): return self.value
         else: 
-            xp = character.xpSince(expedition.date)
-            if (xp > value): return value
+            xp = self.character.xpSince(self.expedition.date)
+            if (xp > self.value): return self.value
             else: return xp
 
 def levelLookup(xp):

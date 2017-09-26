@@ -1,0 +1,62 @@
+{% load staticfiles %}
+<script type=text/javascript src={% static 'static_jquery/js/jquery.js' %}></script>
+<script type=text/javascript src={% static 'stats/js/jquery.formset.js' %}></script>
+
+<h1> Editing Character </h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<table>
+	<tbody>
+	{% with carryformset.empty_form as ef %}
+	<tr id="empty_carry_form" style="display:none;" >
+	{% for fields in ef %}
+	<td>{{ fields }}</td>
+	{% endfor %}
+	</tr>
+	{% endwith %}
+	</tbody>
+</table>
+<form method="post" id="editChForm">
+	{% csrf_token %}
+	{% for field in form %}
+		{% if field.label == "Slug" %}
+			{{ field.as_hidden }}
+		{% else %}
+			{{ field.label }}:{{ field }} <br>
+		{% endif %}
+	{% endfor %}
+	<table class="cxp"> <tbody> 
+{% if carryformset.initial_form_count == 0 %}
+	<tr style="display:none;"></tr>
+{% else %}
+	{% for row in carryformset.forms %}
+	<tr id="{{ row.prefix }}-row">
+		<td> {{ row.value }} </td>
+		<td> {{ row.ex }} </td>
+		<td> {{ row.carrytype }} </td>
+	</tr>
+	{% endfor %}
+{% endif %}
+	</tbody>
+	</table>
+	{{ carryformset.management_form }}
+	<br />
+<input type="submit" name="submit" value="done" />
+</form>
+	<script type="text/javascript">
+		$(function() {
+			$('#editChForm table.cxp tbody tr').formset({
+				prefix: 'carry',
+{% if carryformset.initial_form_count == 0 %}
+				formTemplate: '#empty_carry_form',
+{% endif %}
+				});
+		}) 
+	</script>	
+
+	<script type="text/javascript">
+	function activateDDField(obj) {
+		var ddf = document.getElementById("id_dd_date");
+		ddf.required =  obj.value != "A";
+		ddf.disabled = obj.value == "A";
+	}
+	</script>

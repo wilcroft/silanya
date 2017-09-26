@@ -1,28 +1,46 @@
-{% load stats_extras %}
+{% load staticfiles %}
+<head>
+<link rel="stylesheet" type="text/css" href={% static 'stats/css/table.css' %} >
+<script type=text/javascript src={% static 'static_jquery/js/jquery.js' %}></script>
+<script type=text/javascript src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.js"></script>
+<!-- <script type=text/javascript src={% static 'stats/js/jquery.tablesorter.js' %}></script> -->
+<!-- <script type=text/javascript src={% static 'stats/js/jquery.CongelarFilaColumna.js' %}></script> -->
+</head>
 {% if character_overview %}
-<table>
-	<tr> <td><a href="{% url 'stats:add' %}"> Add new </a> </td> 
-	<td> Level </td> <td> Total XP </td> <td> Next Level </td> 
+<div class="tablediv">
+<table id="allChars" class="tablesorter">
+	<thead> <tr> <th class="headcol"><a href="{% url 'stats:addex' %}">New Ex</a> <br> <a href="{% url 'stats:addch' %}">New Char</a></th> 
+	<th>Status</th><th>Level</th><th>Total XP</th><th> Next Level</th> 
 	{% for ex in allex %}
-		<td> <a href="{% url 'stats:ex_view' ex.slug %}">{{ex.name}} </a></td>
+		<th> <a href="{% url 'stats:ex_view' ex.slug %}">{{ex.name}} </a></th>
 	{% endfor %}
 	</tr>
+	</thead>
+	<tbody>
 	{% for char in character_overview %}
-		<tr>
-		<td> <a href="{% url 'stats:char_view' char.slug %}">{{ char.name }}</a> </td>
+		<tr class="char_{{char.status}}">
+		<th class="headcol char_{{char.status}}"> <a class="char_{{char.status}}" href="{% url 'stats:char_view' char.slug %}">{{ char.name }}</a> </td>
 		{% for xp in char.tableInfo %}
 			<td> {{ xp }} </td>
 		{% endfor %}
 		</tr>
 	{% endfor %}
+	</tbody>
 </table>
-<!--
-    <ul>
-    {% for char in character_overview %}
-        <li><a href="{% url 'stats:char_view' char.slug %}">{{ char.name }}</a></li>
-    {% endfor %}
-    </ul>
--->
+</div>
+<script type="text/javascript">
+$(document).ready(function()
+	{
+		$("#allChars").tablesorter(
+			{cancelSelection: false,
+			tableClass: "tablesorter",
+			cssAsc: "headerSortUp",
+			cssDesc: "headerSortDown",
+			cssHeader: "header",}
+		);
+	}
+);
+</script>
 {% else %}
     <p>No characters are available.</p>
 {% endif %}

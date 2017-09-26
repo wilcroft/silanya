@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_static_jquery',
     'ajax_select',
+    'markdownx',
 ]
 
 MIDDLEWARE = [

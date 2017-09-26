@@ -1,4 +1,5 @@
 <h1> {{char.name}} </h1>
+<a href="{% url 'stats:editch' char.slug %}">Edit</a>
 {% if char_ex_list %}
     <ul>
     {% for ex in char_ex_list %}

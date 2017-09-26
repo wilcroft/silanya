@@ -1,0 +1,9 @@
+{% load staticfiles %}
+<h1> Add New Character </h1>
+{% if form.errors %}<p><strong>{{ form.errors }}</strong></p>{% endif %}
+<form method="post" id="addChForm">
+	{% csrf_token %}
+	{{ form |linebreaks}}
+	<br />
+<input type="submit" name="submit" value="done" />
+</form>
