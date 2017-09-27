@@ -1,0 +1,7 @@
+div.markdownx-preview{
+	max-height: 400px;
+	overflow-y: scroll;
+}
+textarea.markdownx-editor{
+	max-height:400px;
+}

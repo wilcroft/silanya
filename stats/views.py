@@ -139,7 +139,7 @@ def editex(request, pk):
         return HttpResponseRedirect(reverse('stats:index'))
     else: 
         x = Expedition.objects.get(slug=pk);
-        form = AddExForm(initial={'dm':x.dm, 'name':x.name, 'date':x.date, 'slug':x.slug})
+        form = AddExForm(initial={'dm':x.dm, 'name':x.name, 'date':x.date, 'slug':x.slug, 'log':x.log})
         form['slug'].disabled=True
         CharFormSet= formset_factory(XPForm, extra=0)
         initial_data = []

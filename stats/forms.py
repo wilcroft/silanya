@@ -1,8 +1,11 @@
+import datetime
 from django import forms
 from django.forms import formset_factory
 from django.utils.safestring import mark_safe
 from django.contrib.admin.widgets import AdminDateWidget
 from markdownx.fields import MarkdownxFormField
+from django.forms.extras.widgets import SelectDateWidget
+from django.contrib.admin.widgets import AdminDateWidget
 
 from .models import Player, Expedition, Character, XP
 
@@ -18,7 +21,7 @@ class AddExForm(forms.Form):
     name = forms.CharField(label='Expedition Name')
     slug = forms.SlugField(label='Expedition Slug')
     dm = forms.ModelChoiceField(queryset=Player.objects.all(),label='DM')
-    date = forms.DateField(label='Expedition Date') 
+    date = forms.DateField(label='Expedition Date', widget=AdminDateWidget) 
 
     log = MarkdownxFormField()
 
