@@ -13,8 +13,8 @@ from .models import Character, Expedition, Player, XP, CXP
 from .forms import AddExForm, XPForm, EditChForm, AddChForm, CarryXPForm, EditAliveChForm, EditDDChForm
 
 class CharacterView(generic.ListView):
-    template_name = 'stats/charlist.html'
-    context_object_name = 'char_ex_list'
+    template_name = 'stats/chardetail.html'
+    context_object_name = 'char_detail'
     char = Character()
 
     def get_queryset(self):#, char):
@@ -29,8 +29,8 @@ class CharacterView(generic.ListView):
         return context
 
 class ExpeditionView(generic.ListView):
-    template_name = 'stats/exlist.html'
-    context_object_name = 'ex_list'
+    template_name = 'stats/exdetail.html'
+    context_object_name = 'ex_detail'
     ex = Expedition()
 
     def get_queryset(self):#, char):
@@ -53,6 +53,27 @@ class IndexView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['allex'] = Expedition.objects.order_by('-date')
+        return context
+
+class CharacterOverviewView(generic.TemplateView):
+    template_name = 'stats/charlist.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CharacterOverviewView, self).get_context_data(**kwargs)
+        context['dead'] = Character.objects.filter(status=Character.DEAD).order_by('name')
+        context['gone'] = Character.objects.filter(status=Character.DEPARTED).order_by('name')
+        c = Character.objects.exclude(status=Character.DEAD).exclude(status=Character.DEPARTED)
+        npc = Player.objects.get(name='NPC')
+        context['npc'] = c.filter(player=npc).order_by('name')
+        context['pcs'] = c.exclude(player=npc).order_by('name')
+        return context
+
+class ExpeditionOverviewView(generic.TemplateView):
+    template_name = 'stats/exlist.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ExpeditionOverviewView, self).get_context_data(**kwargs)
+        context['exlist'] = Expedition.objects.all().order_by('-date')
         return context
 
 # Create your views here.

@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>My Webpage!</title>
+<link rel="stylesheet" type="text/css" href={% static 'stats/css/base.css' %}>
+{% block extraheaders %} {% endblock %}
+</head>
+<body>
+<div id="top_header">
+	<div id="top_header_left"> Left side! </div>
+	<div id="top_header_right">Right side! </div>
+</div>
+<table id="main_content"> <tbody> <tr>
+	<td id="left_sidebar"> sidebar things!<ul>
+		<li><a href={% url 'stats:index' %}>Overview</a></li>
+		<li><a href={% url 'stats:ch_list' %}>Character List</a></li>
+		<li><a href={% url 'stats:ex_list' %}>Expedition List</a></li>
+	<ul></td>
+	<td id="page"> {% block page %} {% endblock %} </td>
+</tr></tbody></table>
+<div id="end_footer">
+&copy;2017 wilcroft - <a href="http://github.com/wilcroft">github.com/wilcroft</a>
+</div>
+</body>
+</html>

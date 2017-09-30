@@ -1,4 +1,4 @@
-table {
+table.tablesorter {
 /*        display: block;
         overflow-x: auto;
         white-space: nowrap; 
@@ -17,11 +17,11 @@ div.tablediv {
 	overflow-x:scroll;
 	overflow-y:visible;
 	padding:0;
-	margin-left:154px;
+	margin-left:158px;
 }
 .headcol {
 	position:absolute;
-	left: 0;
+	left: 254px;
 	top: auto;
 	width:10em;
 }

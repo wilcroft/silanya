@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block page %}
+<h1> {{char.name}} </h1>
+<a href="{% url 'stats:editch' char.slug %}">Edit</a>
+{% if char_detail %}
+    <ul>
+    {% for ex in char_detail %}
+        <li>{{ex.name}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No expeditions yet.</p>
+{% endif %}
+{% endblock %}

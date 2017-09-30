@@ -1,11 +1,14 @@
+{% extends "base.html" %}
 {% load staticfiles %}
-<head>
+{% block extraheaders %}
 <link rel="stylesheet" type="text/css" href={% static 'stats/css/table.css' %} >
 <script type=text/javascript src={% static 'static_jquery/js/jquery.js' %}></script>
 <script type=text/javascript src="https://mottie.github.io/tablesorter/js/jquery.tablesorter.js"></script>
 <!-- <script type=text/javascript src={% static 'stats/js/jquery.tablesorter.js' %}></script> -->
 <!-- <script type=text/javascript src={% static 'stats/js/jquery.CongelarFilaColumna.js' %}></script> -->
-</head>
+{% endblock %}
+{% block page %}
+
 {% if character_overview %}
 <div class="tablediv">
 <table id="allChars" class="tablesorter">
@@ -44,3 +47,4 @@ $(document).ready(function()
 {% else %}
     <p>No characters are available.</p>
 {% endif %}
+{% endblock %}

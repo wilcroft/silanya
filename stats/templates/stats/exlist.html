@@ -1,12 +1,10 @@
-<h1> {{ex.name}} </h1>
-<a href="{% url 'stats:editex' ex.slug %}">Edit</a>
-{% if ex_list %}
-    <ul>
-    {% for x in ex_list %}
-        <li>{{ x.character }}: {{ x.value }}</li>
-    {% endfor %}
-    </ul>
-	{{ log }}
-{% else %}
-    <p>No expeditions yet.</p>
-{% endif %}
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extraheaders %}
+<link rel="stylesheet" type="text/css" href={% static 'stats/css/charlist.css' %}>
+{% endblock %}
+{% block page %}
+{% for ex in exlist %}
+<a href={% url 'stats:ex_view' ex.slug%}>{{ex.name}}</a> - Some description <br>
+{% endfor %}
+{% endblock %}

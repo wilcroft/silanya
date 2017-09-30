@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extraheaders %}
+{% endblock %}
+{% block page %}
+<h1> {{ex.name}} </h1>
+<a href="{% url 'stats:editex' ex.slug %}">Edit</a>
+{% if ex_detail %}
+    <ul>
+    {% for x in ex_detail %}
+        <li>{{ x.character }}: {{ x.value }}</li>
+    {% endfor %}
+    </ul>
+	{{ log }}
+{% else %}
+    <p>No expeditions yet.</p>
+{% endif %}
+{% endblock %}

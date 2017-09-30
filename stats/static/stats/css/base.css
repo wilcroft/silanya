@@ -1,0 +1,40 @@
+body{
+	min-height: 100%;
+	margin: 0;
+}
+div#top_header {
+	height: 80px;
+}
+div#top_header_left {
+	text-align: left;
+	width: 50%;
+	float: left;
+}
+div#top_header_right {
+	text-align: right;
+	width: 50%;
+	float: right;
+}
+table#main_content { 
+	margin: 0 auto;
+	width:100%;
+	overflow:auto;
+	position:relative;
+	height:auto !important;
+}
+td#left_sidebar {
+/*	float: left; */
+	vertical-align: top;
+	width: 250px;
+}
+td#page {
+/*	float:left; */
+	max-width: 500px;
+}
+div#end_footer {
+	height: 20px;
+/*	position:absolute;*/
+	bottom:0;
+}
+
+

@@ -1,11 +1,31 @@
-<h1> {{char.name}} </h1>
-<a href="{% url 'stats:editch' char.slug %}">Edit</a>
-{% if char_ex_list %}
-    <ul>
-    {% for ex in char_ex_list %}
-        <li>{{ex.name}}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No expeditions yet.</p>
-{% endif %}
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extraheaders %}
+<link rel="stylesheet" type="text/css" href={% static 'stats/css/charlist.css' %}>
+{% endblock %}
+{% block page %}
+<h3> Alive </h3>
+<ul class=characters>
+{% for c in pcs %}
+	<li> <a href={% url 'stats:char_view' c.slug %}>{{ c.name }}</a></li>
+{% endfor %}
+</ul>
+<h3> Shared Characters</h3>
+<ul class=characters>
+{% for c in npc %}
+	<li> <a href={% url 'stats:char_view' c.slug %}>{{ c.name }}</a></li>
+{% endfor %}
+</ul>
+<h3> Dead PCs </h3>
+<ul class=characters>
+{% for c in dead %}
+	<li> <a href={% url 'stats:char_view' c.slug %}>{{ c.name }}</a></li>
+{% endfor %}
+</ul>
+<h3> Departed PCs </h3>
+<ul class=characters>
+{% for c in gone %}
+	<li> <a href={% url 'stats:char_view' c.slug %}>{{ c.name }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

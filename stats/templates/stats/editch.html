@@ -1,6 +1,11 @@
+{% extends "base.html" %}
 {% load staticfiles %}
+
+{% block extraheaders %}
 <script type=text/javascript src={% static 'static_jquery/js/jquery.js' %}></script>
 <script type=text/javascript src={% static 'stats/js/jquery.formset.js' %}></script>
+{% endblock %}
+{% block page %}
 
 <h1> Editing Character </h1>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -60,3 +65,4 @@
 		ddf.disabled = obj.value == "A";
 	}
 	</script>
+{% endblock %}

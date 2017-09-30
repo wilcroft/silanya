@@ -1,16 +1,18 @@
+{% extends "base.html" %}
 {% load staticfiles %}
-{% load i18n admin_modify %}
-{% url 'admin:jsi18n' as jsi18nurl %}
+{% block extraheaders %}
 <link rel="stylesheet" type="text/css" href={% static 'stats/css/ex.css' %} >
 <link rel="stylesheet" type="text/css" href={% static 'admin/css/base.css' %}>
 <link rel="stylesheet" type="text/css" href={% static 'admin/css/widgets.css' %}>
-<!-- <script type="text/javascript" src={{ jsi18nurl }}></script> -->
 <script type=text/javascript src={% static 'stats/js/jsi18n' %}></script>
 <script type=text/javascript src={% static 'static_jquery/js/jquery.js' %}></script>
 <script type="text/javascript" src={% static 'admin/js/core.js' %}></script>
 <script type="text/javascript" src={% static 'admin/js/jquery.init.js' %}></script>
 <script type=text/javascript src={% static 'static_jquery/js/jquery.js' %}></script>
 <script type=text/javascript src={% static 'stats/js/jquery.formset.js' %}></script>
+
+{% endblock %}
+{% block page %}
 
 <h1> Add New Expedition </h1>
 {% if form.errors %}<p><strong>{{ form.errors }}</strong></p>{% endif %}
@@ -43,3 +45,4 @@
 <input type="submit" name="submit" value="done" />
 </form>
 {{ form.media }}
+{% endblock %}
