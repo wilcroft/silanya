@@ -75,6 +75,12 @@ class Character(models.Model):
                 lst.append("")
         return lst
 
+    def tableName(self):
+        if (len(self.name)>20):
+            return (self.name[0:17]+"...")
+        else:
+            return self.name
+
     def tableInfo(self):
         sdict = dict(Character.STATUS_CHOICE)
         lst = []

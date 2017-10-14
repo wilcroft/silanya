@@ -22,7 +22,7 @@
 	<tbody>
 	{% for char in character_overview %}
 		<tr class="char_{{char.status}}">
-		<th class="headcol char_{{char.status}}"> <a class="char_{{char.status}}" href="{% url 'stats:char_view' char.slug %}">{{ char.name }}</a> </td>
+		<th class="headcol char_{{char.status}}"> <a class="char_{{char.status}}" href="{% url 'stats:char_view' char.slug %}">{{ char.tableName }}</a> </td>
 		{% for xp in char.tableInfo %}
 			<td> {{ xp }} </td>
 		{% endfor %}
